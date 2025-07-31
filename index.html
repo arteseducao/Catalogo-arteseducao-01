@@ -113,22 +113,39 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
 
         /* MEDIA QUERIES PARA MOBILE */
         @media (max-width: 768px) { /* Para telas com largura máxima de 768px (tablets e celulares) */
-            /* SOBRESCREVER LAYOUT DE PRODUTOS PARA MOBILE */
+            /* Reverte .produtos para se comportar como estava, sem forcing a grid */
+            /* Removemos grid-template-columns daqui para que o desktop nao seja afetado e o mobile use o default */
+            /* Deixamos o .produtos como block ou o que for o default para o layout de 1 coluna. */
+            
+            /* Ajustes no .interno-catalogo para garantir que o espaçamento seja responsivo */
+            .interno-catalogo {
+                width: 100%; /* Ocupa a largura total */
+                padding: 0 10px; /* Adiciona um pequeno padding nas laterais */
+                box-sizing: border-box;
+            }
             .produtos {
-                grid-template-columns: repeat(2, 1fr) !important; /* FORÇANDO 2 colunas */
-                gap: 8px; /* Ajusta o espaçamento */
+                 /* Remove grid-template-columns e gap daqui, revertendo para o padrão de 1 coluna em mobile */
+                 /* As regras do template HTML farão display:grid e 4 colunas.
+                    Porém, como .interno-catalogo tem width 100% e cards tem 210px,
+                    o navegador automaticamente os empilha em 1 coluna se não houver espaço para 4.
+                    Para garantir 1 card:
+                 */
+                grid-template-columns: 1fr !important; /* Força 1 coluna */
+                gap: 0px !important; /* Sem gap se for 1 coluna */
+                justify-items: center; /* Centraliza os produtos se eles não preencherem a largura total */
             }
             .produto {
-                /* SOBRESCREVE o width/height fixo do desktop APENAS para mobile */
-                width: calc(50% - 4px) !important; /* Usa calc para ajustar à largura da coluna do grid menos half-gap */
-                height: auto !important; /* A altura se ajusta ao conteúdo */
-                padding: 10px; /* Ajusta padding para mobile */
-                box-sizing: border-box; /* Garante que padding não adicione largura */
+                /* Para garantir que o produto ocupe a largura total da coluna (100% em 1 coluna) */
+                width: 90% !important; /* Uma largura um pouco menor que 100% para ter um respiro nas laterais */
+                max-width: 280px !important; /* Limite máximo para não ficar muito largo em tablets */
+                height: auto !important; /* Altura flexível */
+                padding: 10px; 
+                margin: 5px auto !important; /* Centraliza e adiciona margem vertical */
             }
             .produto img {
-                width: 100% !important; /* Imagem ocupa 100% da largura do card */
-                max-width: 120px; /* Limite o tamanho da imagem para que o card não fique muito grande */
-                height: auto !important; /* Mantém proporção */
+                width: 100% !important; /* Imagem ocupa 100% do card */
+                max-width: 150px; /* Limite o tamanho da imagem */
+                height: auto !important; 
             }
             .nome {
                 min-height: 36px; 
@@ -150,7 +167,7 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
                 margin-bottom: 10px;
                 padding-top: 8px;
                 padding-bottom: 8px;
-                z-index: 1000; /* Z-index para a barra de busca (abaixo do painel e botão) */
+                z-index: 1000; 
             }
             .busca-container input {
                 width: calc(100% - 40px); 
@@ -167,7 +184,7 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
                 left: 20px; 
                 top: 20px; 
                 bottom: auto; 
-                max-height: calc(100vh - 80px); /* Ajustado para deixar mais espaço para topbar e evitar rodapé */
+                max-height: calc(100vh - 80px); 
                 transform: translateY(100vh); 
                 transition: transform 0.3s ease-out; 
                 pointer-events: none; 
@@ -181,26 +198,14 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
                 display: flex; 
                 font-size: 12px;
                 z-index: 1002; 
+                bottom: 80px; /* Mover botão para cima */
             }
         }
 
         @media (max-width: 480px) { /* Para celulares muito pequenos (1 coluna) */
-            .produtos {
-                grid-template-columns: 1fr !important; /* FORÇANDO 1 coluna */
-            }
-            .produto {
-                width: 90% !important; 
-                max-width: 250px !important; 
-                margin: 0 auto !important; 
-            }
-            #pedido {
-                 width: calc(100% - 20px); 
-                 left: 10px; 
-                 right: 10px;
-            }
+            /* Já está forçando 1 coluna por padrão nos 768px */
             #toggle-pedido-btn {
-                right: 10px;
-                bottom: 10px; 
+                bottom: 80px; /* Mover botão para cima em telas menores também */
             }
         }
     </style></head>
