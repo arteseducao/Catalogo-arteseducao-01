@@ -23,7 +23,7 @@ input[type='number'] {width: 60px; padding: 4px;}
 button {background: #d60087; color: white; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 6px;}
 </style>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>
-        /* Estilos para o painel do pedido (Desktop) */
+        /* Estilos para o painel do pedido */
         #pedido {
             position: fixed;
             top: 20px;
@@ -51,8 +51,12 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
             margin-bottom: 8px;
             border-radius: 6px;
             border: 1px solid #ccc;
-            font-size: 14px;
             box-sizing: border-box; /* Inclui padding e border no width */
+        }
+        /* Ajuste do font-size para input[type='number'] e input[type='text'] globalmente para evitar zoom */
+        input[type='number'], #pedido input[type='text'] {
+            font-size: 16px !important; /* Evita zoom em mobile, !important para garantir */
+            -webkit-text-size-adjust: 100% !important; /* Previne ajuste de texto em iOS */
         }
         #lista-pedido {
             font-size: 13px;
@@ -109,20 +113,22 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
 
         /* MEDIA QUERIES PARA MOBILE */
         @media (max-width: 768px) { /* Para telas com largura máxima de 768px (tablets e celulares) */
+            /* SOBRESCREVER LAYOUT DE PRODUTOS PARA MOBILE */
             .produtos {
                 grid-template-columns: repeat(2, 1fr) !important; /* FORÇANDO 2 colunas */
                 gap: 8px; /* Ajusta o espaçamento */
             }
             .produto {
                 /* SOBRESCREVE o width/height fixo do desktop APENAS para mobile */
-                width: 100% !important; /* Faz o card ocupar 100% da largura da sua coluna no grid */
+                width: calc(50% - 4px) !important; /* Usa calc para ajustar à largura da coluna do grid menos half-gap */
                 height: auto !important; /* A altura se ajusta ao conteúdo */
                 padding: 10px; /* Ajusta padding para mobile */
+                box-sizing: border-box; /* Garante que padding não adicione largura */
             }
             .produto img {
-                width: 100%; /* Imagem ocupa 100% da largura do card */
+                width: 100% !important; /* Imagem ocupa 100% da largura do card */
                 max-width: 120px; /* Limite o tamanho da imagem para que o card não fique muito grande */
-                height: auto; /* Mantém proporção */
+                height: auto !important; /* Mantém proporção */
             }
             .nome {
                 min-height: 36px; 
@@ -183,9 +189,9 @@ button {background: #d60087; color: white; border: none; padding: 6px 10px; bord
                 grid-template-columns: 1fr !important; /* FORÇANDO 1 coluna */
             }
             .produto {
-                width: 90% !important; /* Para 1 coluna, pode ser um pouco menor para ter margem */
-                max-width: 250px !important; /* Limite o tamanho máximo */
-                margin: 0 auto !important; /* Centraliza em 1 coluna */
+                width: 90% !important; 
+                max-width: 250px !important; 
+                margin: 0 auto !important; 
             }
             #pedido {
                  width: calc(100% - 20px); 
